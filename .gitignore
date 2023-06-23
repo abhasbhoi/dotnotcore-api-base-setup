@@ -1,0 +1,10 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/APISetup/.vs
+/APISetup/APISetup/bin/Debug/net6.0
+/APISetup/APISetup/obj
+/WebAPIBase/.vs
+/WebAPIBase/WebAPIBase/obj
+/WebAPIBase/WebAPIBase/bin/Debug/net6.0
