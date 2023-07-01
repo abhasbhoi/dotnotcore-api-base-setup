@@ -13,7 +13,7 @@ namespace WebAPIBase.Repository
         }
         public Employee AddEmployee(Employee employee)
         {
-            EmployeeMock.employees.Add(employee);
+            _dbContext.Employees.Add(employee);
             return employee;
         }
 
@@ -21,7 +21,7 @@ namespace WebAPIBase.Repository
         {
             var employee = _dbContext.Employees.FirstOrDefault(x => x.Id == employeeId);
             if (employee != null)
-                EmployeeMock.employees.Remove(employee);
+                _dbContext.Employees.Remove(employee);
         }
 
         public Employee GetEmployee(int employeeId)
@@ -51,7 +51,6 @@ namespace WebAPIBase.Repository
 
         public void Dispose()
         {
-            throw new NotImplementedException();
         }
     }
 }

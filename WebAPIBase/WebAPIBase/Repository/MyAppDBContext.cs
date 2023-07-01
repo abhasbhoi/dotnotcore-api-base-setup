@@ -15,6 +15,7 @@ namespace WebAPIBase.Repository
             
         }
 
-        public virtual DbSet<Employee> Employees { get; set; }
+        public virtual DbSet<Employee> Employees { get; set; } = null!;
+
     }
 }
