@@ -12,10 +12,17 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Host.UseSerilog((context, configuration) => configuration.ReadFrom.Configuration(context.Configuration));
 
+var MyAllowSpecificOrigins = "_apiBaseAllowSpecificOrigins";
+builder.Services.AddCors(option => option.AddPolicy(name: MyAllowSpecificOrigins,
+    policy =>
+    {
+        policy.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod();
+    }));
+
 // add services related to controller and HTTP requests
 builder.Services.AddControllers();
 
-builder.Services.AddDbContext<MyAppDBContext>(opt =>opt.UseInMemoryDatabase("Employees"));
+builder.Services.AddDbContext<MyAppDBContext>(opt => opt.UseInMemoryDatabase("Employees"));
 // Register instances
 builder.Services.AddScoped<IEmployeeBusinessLayer, EmployeeBusinessLayer>();
 builder.Services.AddScoped<IEmployeeRepository, EmployeeRepository>();
@@ -37,6 +44,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseCors(MyAllowSpecificOrigins);
 
 app.UseSerilogRequestLogging();
 
