@@ -9,9 +9,12 @@ namespace WebAPIBase.Controller
     public class EmployeeController : ControllerBase
     {
         private IEmployeeBusinessLayer _employeeBusinessLayer;
-        public EmployeeController(IEmployeeBusinessLayer employeeBusinessLayer)
+        private ILogger<EmployeeController> _logger;
+        public EmployeeController(IEmployeeBusinessLayer employeeBusinessLayer, ILogger<EmployeeController> logger)
         {
             _employeeBusinessLayer = employeeBusinessLayer;
+            _logger = logger;
+            _logger.LogInformation("EmployeeController invoked");
         }
 
         /// <summary>
@@ -21,6 +24,7 @@ namespace WebAPIBase.Controller
         [HttpGet(Name = "GetEmployees")]
         public ActionResult<List<Employee>> GetEmployees()
         {
+            _logger.LogInformation("GetEmployees method started");
             return _employeeBusinessLayer.GetEmployees();
         }
 
@@ -32,6 +36,7 @@ namespace WebAPIBase.Controller
         [HttpGet("{Id}",Name = "GetEmployeeById")]
         public ActionResult<Employee> GetEmployeeById(int Id)
         {
+            _logger.LogInformation("GetEmployeeById method started");
             return _employeeBusinessLayer.GetEmployee(Id);
         }
 
@@ -43,6 +48,7 @@ namespace WebAPIBase.Controller
         [HttpPost(Name = "AddEmployee")]
         public ActionResult<Employee> AddEmployee([FromBody] Employee employee)
         {
+            _logger.LogInformation("AddEmployee method started");
             return _employeeBusinessLayer.AddEmployee(employee);
         }
 
@@ -55,6 +61,7 @@ namespace WebAPIBase.Controller
         [HttpPut(Name = "UpdateEmployee")]
         public ActionResult<Employee> UpdateEmployee(int employeeId, Employee employee)
         {
+            _logger.LogInformation("UpdateEmployee method started");
             return _employeeBusinessLayer.UpdateEmployee(employeeId, employee);
         }
 
@@ -65,6 +72,7 @@ namespace WebAPIBase.Controller
         [HttpDelete(Name = "DeleteEmployee")]
         public void DeleteEmployee(int employeeId)
         {
+            _logger.LogInformation("DeleteEmployee method started");
             _employeeBusinessLayer.DeleteEmployee(employeeId);
         }
     }

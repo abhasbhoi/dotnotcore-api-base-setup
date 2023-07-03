@@ -6,8 +6,11 @@ using WebAPIBase.BusinessLayers.Contracts;
 using WebAPIBase.Models;
 using WebAPIBase.Repository;
 using WebAPIBase.Repository.Contract;
+using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Host.UseSerilog((context, configuration) => configuration.ReadFrom.Configuration(context.Configuration));
 
 // add services related to controller and HTTP requests
 builder.Services.AddControllers();
@@ -34,6 +37,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseSerilogRequestLogging();
 
 app.UseHttpsRedirection();
 
