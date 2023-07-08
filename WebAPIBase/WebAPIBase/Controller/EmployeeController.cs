@@ -25,7 +25,15 @@ namespace WebAPIBase.Controller
         public ActionResult<List<Employee>> GetEmployees()
         {
             _logger.LogInformation("GetEmployees method started");
-            return _employeeBusinessLayer.GetEmployees();
+            try
+            {
+                return Ok(_employeeBusinessLayer.GetEmployees());
+            }
+            catch(Exception ex)
+            {
+                _logger.LogInformation(ex.ToString());
+                return StatusCode(StatusCodes.Status500InternalServerError);
+            }
         }
 
         /// <summary>
@@ -37,7 +45,22 @@ namespace WebAPIBase.Controller
         public ActionResult<Employee> GetEmployeeById(int Id)
         {
             _logger.LogInformation("GetEmployeeById method started");
-            return _employeeBusinessLayer.GetEmployee(Id);
+            try
+            {
+                var employee = _employeeBusinessLayer.GetEmployee(Id);
+                if(employee==null)
+                {
+                    _logger.LogInformation($"No data found for Id {Id}");
+                    return NoContent();
+                }
+                return Ok(employee);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogInformation(ex.ToString());
+                return StatusCode(StatusCodes.Status500InternalServerError);
+            }
+
         }
 
         /// <summary>
@@ -49,7 +72,15 @@ namespace WebAPIBase.Controller
         public ActionResult<Employee> AddEmployee([FromBody] Employee employee)
         {
             _logger.LogInformation("AddEmployee method started");
-            return _employeeBusinessLayer.AddEmployee(employee);
+            try
+            {
+                return StatusCode(StatusCodes.Status201Created, _employeeBusinessLayer.AddEmployee(employee));
+            }
+            catch (Exception ex)
+            {
+                _logger.LogInformation(ex.ToString());
+                return StatusCode(StatusCodes.Status500InternalServerError);
+            }
         }
 
         /// <summary>
@@ -62,7 +93,15 @@ namespace WebAPIBase.Controller
         public ActionResult<Employee> UpdateEmployee(int employeeId, Employee employee)
         {
             _logger.LogInformation("UpdateEmployee method started");
-            return _employeeBusinessLayer.UpdateEmployee(employeeId, employee);
+            try
+            {
+                return Ok(_employeeBusinessLayer.UpdateEmployee(employeeId, employee));
+            }
+            catch (Exception ex)
+            {
+                _logger.LogInformation(ex.ToString());
+                return StatusCode(StatusCodes.Status500InternalServerError);
+            }
         }
 
         /// <summary>
@@ -70,10 +109,19 @@ namespace WebAPIBase.Controller
         /// </summary>
         /// <param name="employeeId"></param>
         [HttpDelete(Name = "DeleteEmployee")]
-        public void DeleteEmployee(int employeeId)
+        public ActionResult DeleteEmployee(int employeeId)
         {
             _logger.LogInformation("DeleteEmployee method started");
-            _employeeBusinessLayer.DeleteEmployee(employeeId);
+            try
+            {
+                _employeeBusinessLayer.DeleteEmployee(employeeId);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogInformation(ex.ToString());
+                return StatusCode(StatusCodes.Status500InternalServerError);
+            }
         }
     }
 }
