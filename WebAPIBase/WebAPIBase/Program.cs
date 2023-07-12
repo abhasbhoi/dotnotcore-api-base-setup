@@ -7,6 +7,8 @@ using WebAPIBase.Models;
 using WebAPIBase.Repository;
 using WebAPIBase.Repository.Contract;
 using Serilog;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -31,7 +33,27 @@ builder.Services.AddScoped<IEmployeeRepository, EmployeeRepository>();
 //builder.Services.AddDbContext<MyAppDBContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(c => {
+    c.SwaggerDoc("v1", new OpenApiInfo
+    {
+        Version = "v1",
+        Title = "WebAPI Base V1"
+    });
+    c.SwaggerDoc("v2", new OpenApiInfo
+    {
+        Version = "v2",
+        Title = "WebAPI Base V2"
+    });
+
+    c.ResolveConflictingActions(apiDescriptions => apiDescriptions.First());
+});
+
+builder.Services.AddApiVersioning(x =>
+{
+    x.DefaultApiVersion = new ApiVersion(1, 0);
+    x.AssumeDefaultVersionWhenUnspecified = true;
+    x.ReportApiVersions = true;
+});
 
 var app = builder.Build();
 
@@ -42,7 +64,11 @@ var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
-    app.UseSwaggerUI();
+    app.UseSwaggerUI(c =>
+    {
+        c.SwaggerEndpoint("/swagger/v1/swagger.json", "V1.0");
+        c.SwaggerEndpoint("/swagger/v2/swagger.json", "V2.0");
+    });
 }
 
 app.UseCors(MyAllowSpecificOrigins);

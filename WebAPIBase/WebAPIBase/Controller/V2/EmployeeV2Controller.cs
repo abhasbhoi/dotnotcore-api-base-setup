@@ -2,19 +2,20 @@
 using WebAPIBase.BusinessLayers.Contracts;
 using WebAPIBase.Models;
 
-namespace WebAPIBase.Controller
+namespace WebAPIBase.Controller.V2
 {
     [ApiController]
-    [Route("api/[controller]")]
-    public class EmployeeController : ControllerBase
+    [ApiVersion("2.0")]
+    [Route("api/v{version:apiVersion}/[controller]")]
+    public class EmployeeV2Controller : ControllerBase
     {
         private IEmployeeBusinessLayer _employeeBusinessLayer;
-        private ILogger<EmployeeController> _logger;
-        public EmployeeController(IEmployeeBusinessLayer employeeBusinessLayer, ILogger<EmployeeController> logger)
+        private ILogger<EmployeeV2Controller> _logger;
+        public EmployeeV2Controller(IEmployeeBusinessLayer employeeBusinessLayer, ILogger<EmployeeV2Controller> logger)
         {
             _employeeBusinessLayer = employeeBusinessLayer;
             _logger = logger;
-            _logger.LogInformation("EmployeeController invoked");
+            _logger.LogInformation("EmployeeV2Controller invoked");
         }
 
         /// <summary>
@@ -29,7 +30,7 @@ namespace WebAPIBase.Controller
             {
                 return Ok(_employeeBusinessLayer.GetEmployees());
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 _logger.LogInformation(ex.ToString());
                 return StatusCode(StatusCodes.Status500InternalServerError);
@@ -41,14 +42,14 @@ namespace WebAPIBase.Controller
         /// </summary>
         /// <param name="Id"></param>
         /// <returns></returns>
-        [HttpGet("{Id}",Name = "GetEmployeeById")]
+        [HttpGet("{Id}", Name = "GetEmployeeById")]
         public ActionResult<Employee> GetEmployeeById(int Id)
         {
             _logger.LogInformation("GetEmployeeById method started");
             try
             {
                 var employee = _employeeBusinessLayer.GetEmployee(Id);
-                if(employee==null)
+                if (employee == null)
                 {
                     _logger.LogInformation($"No data found for Id {Id}");
                     return NoContent();
