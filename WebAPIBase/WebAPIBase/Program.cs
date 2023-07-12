@@ -29,9 +29,6 @@ builder.Services.AddDbContext<MyAppDBContext>(opt => opt.UseInMemoryDatabase("Em
 builder.Services.AddScoped<IEmployeeBusinessLayer, EmployeeBusinessLayer>();
 builder.Services.AddScoped<IEmployeeRepository, EmployeeRepository>();
 
-// Configure DBContect connection
-//builder.Services.AddDbContext<MyAppDBContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
-
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c => {
     c.SwaggerDoc("v1", new OpenApiInfo
@@ -56,10 +53,6 @@ builder.Services.AddApiVersioning(x =>
 });
 
 var app = builder.Build();
-
-
-//app.MapGet("/employees", async (MyAppDBContext db) =>
-//    await db.Employees.ToListAsync());
 
 if (app.Environment.IsDevelopment())
 {
