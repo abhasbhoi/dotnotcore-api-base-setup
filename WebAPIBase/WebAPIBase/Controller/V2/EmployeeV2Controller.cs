@@ -6,7 +6,8 @@ namespace WebAPIBase.Controller.V2
 {
     [ApiController]
     [ApiVersion("2.0")]
-    [Route("api/v{version:apiVersion}/[controller]")]
+    [Tags("Employee")]
+    [Route("api/v{version:apiVersion}/employee")]
     public class EmployeeV2Controller : ControllerBase
     {
         private IEmployeeBusinessLayer _employeeBusinessLayer;
@@ -26,15 +27,8 @@ namespace WebAPIBase.Controller.V2
         public ActionResult<List<Employee>> GetEmployees()
         {
             _logger.LogInformation("GetEmployees method started");
-            try
-            {
-                return Ok(_employeeBusinessLayer.GetEmployees());
-            }
-            catch (Exception ex)
-            {
-                _logger.LogInformation(ex.ToString());
-                return StatusCode(StatusCodes.Status500InternalServerError);
-            }
+
+            return Ok(_employeeBusinessLayer.GetEmployees());
         }
 
         /// <summary>
@@ -46,22 +40,14 @@ namespace WebAPIBase.Controller.V2
         public ActionResult<Employee> GetEmployeeById(int Id)
         {
             _logger.LogInformation("GetEmployeeById method started");
-            try
-            {
-                var employee = _employeeBusinessLayer.GetEmployee(Id);
-                if (employee == null)
-                {
-                    _logger.LogInformation($"No data found for Id {Id}");
-                    return NoContent();
-                }
-                return Ok(employee);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogInformation(ex.ToString());
-                return StatusCode(StatusCodes.Status500InternalServerError);
-            }
 
+            var employee = _employeeBusinessLayer.GetEmployee(Id);
+            if (employee == null)
+            {
+                _logger.LogInformation($"No data found for Id {Id}");
+                return NoContent();
+            }
+            return Ok(employee);
         }
 
         /// <summary>
@@ -73,15 +59,8 @@ namespace WebAPIBase.Controller.V2
         public ActionResult<Employee> AddEmployee([FromBody] Employee employee)
         {
             _logger.LogInformation("AddEmployee method started");
-            try
-            {
-                return StatusCode(StatusCodes.Status201Created, _employeeBusinessLayer.AddEmployee(employee));
-            }
-            catch (Exception ex)
-            {
-                _logger.LogInformation(ex.ToString());
-                return StatusCode(StatusCodes.Status500InternalServerError);
-            }
+
+            return StatusCode(StatusCodes.Status201Created, _employeeBusinessLayer.AddEmployee(employee));
         }
 
         /// <summary>
@@ -94,15 +73,8 @@ namespace WebAPIBase.Controller.V2
         public ActionResult<Employee> UpdateEmployee(int employeeId, Employee employee)
         {
             _logger.LogInformation("UpdateEmployee method started");
-            try
-            {
-                return Ok(_employeeBusinessLayer.UpdateEmployee(employeeId, employee));
-            }
-            catch (Exception ex)
-            {
-                _logger.LogInformation(ex.ToString());
-                return StatusCode(StatusCodes.Status500InternalServerError);
-            }
+
+            return Ok(_employeeBusinessLayer.UpdateEmployee(employeeId, employee));
         }
 
         /// <summary>
@@ -113,16 +85,9 @@ namespace WebAPIBase.Controller.V2
         public ActionResult DeleteEmployee(int employeeId)
         {
             _logger.LogInformation("DeleteEmployee method started");
-            try
-            {
-                _employeeBusinessLayer.DeleteEmployee(employeeId);
-                return Ok();
-            }
-            catch (Exception ex)
-            {
-                _logger.LogInformation(ex.ToString());
-                return StatusCode(StatusCodes.Status500InternalServerError);
-            }
+
+            _employeeBusinessLayer.DeleteEmployee(employeeId);
+            return Ok();
         }
     }
 }

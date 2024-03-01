@@ -51,6 +51,7 @@ namespace WebAPIBase.Repository
 
         public void Dispose()
         {
+            _dbContext.Dispose();
         }
     }
 }

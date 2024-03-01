@@ -9,6 +9,7 @@ using WebAPIBase.Repository.Contract;
 using Serilog;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.OpenApi.Models;
+using WebAPIBase.Middlewares;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -19,6 +20,7 @@ builder.Services.AddCors(option => option.AddPolicy(name: MyAllowSpecificOrigins
     policy =>
     {
         policy.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod();
+        //policy.WithOrigins("www.testurl.com,www.programmerinside.com").WithHeaders("ACCEPT,CONTENT-TYPE").WithMethods("GET,POST");
     }));
 
 // add services related to controller and HTTP requests
@@ -75,6 +77,8 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.UseRouting();
+
+app.UseMiddleware(typeof(GlobalExceptionMiddleWarer));
 
 app.Run();
 
