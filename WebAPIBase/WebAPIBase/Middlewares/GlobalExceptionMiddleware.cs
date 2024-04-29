@@ -2,11 +2,11 @@
 
 namespace WebAPIBase.Middlewares
 {
-    public class GlobalExceptionMiddleWarer
+    public class GlobalExceptionMiddleware
     {
         private readonly RequestDelegate _next;
         private readonly ILogger _logger;
-        public GlobalExceptionMiddleWarer(RequestDelegate next, ILogger<GlobalExceptionMiddleWarer> logger)
+        public GlobalExceptionMiddleware(RequestDelegate next, ILogger<GlobalExceptionMiddleware> logger)
         {
             _logger = logger;
             _next = next;

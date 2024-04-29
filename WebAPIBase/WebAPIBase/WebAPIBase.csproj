@@ -7,7 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Contracts\" />
+    <Compile Remove="Contracts\**" />
+    <Content Remove="Contracts\**" />
+    <EmbeddedResource Remove="Contracts\**" />
+    <None Remove="Contracts\**" />
   </ItemGroup>
 
   <ItemGroup>
@@ -27,6 +30,11 @@
     <PackageReference Include="Swashbuckle.AspNetCore.Swagger" Version="6.5.0" />
     <PackageReference Include="Swashbuckle.AspNetCore.SwaggerGen" Version="6.5.0" />
     <PackageReference Include="Swashbuckle.AspNetCore.SwaggerUI" Version="6.5.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Models\DTOs\" />
+    <Folder Include="Models\Entities\" />
   </ItemGroup>
 
 </Project>

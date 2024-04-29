@@ -78,7 +78,7 @@ app.MapControllers();
 
 app.UseRouting();
 
-app.UseMiddleware(typeof(GlobalExceptionMiddleWarer));
+app.UseMiddleware(typeof(GlobalExceptionMiddleware));
 
 app.Run();
 
